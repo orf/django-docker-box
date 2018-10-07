@@ -1,0 +1,14 @@
+version: "2.3"
+services:
+  django:
+    container_name: django-postgres
+    environment:
+      - DJANGO_SETTINGS_MODULE=settings.test_oracle
+      - EXTRA_REQUIREMENTS=oracle.txt
+    extends:
+      file: base.yml
+      service: base
+    depends_on:
+      - oracle
+  oracle:
+    image: container-registry.oracle.com/database/standard:${ORACLE_VERSION:-12.1.0.}

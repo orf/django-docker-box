@@ -1,0 +1,18 @@
+version: "2.3"
+services:
+  django:
+    container_name: django-mysql
+    environment:
+      - DJANGO_SETTINGS_MODULE=settings.test_mysql
+      - EXTRA_REQUIREMENTS=mysql.txt
+    extends:
+      file: base.yml
+      service: base
+    depends_on:
+      - mysql
+  mysql:
+    image: mysql:${MYSQL_VERSION:-8}
+    environment:
+    - MYSQL_USER=django
+    - MYSQL_PASSWORD=django
+    - MYSQL_DATABASE=django
