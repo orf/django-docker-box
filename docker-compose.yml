@@ -74,12 +74,24 @@ services:
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_oracle
     - EXTRA_REQUIREMENTS=oracle.txt
+    volumes:
+      - ./oracle:/oracle
     extends:
       service: sqlite
     depends_on:
-    - oracle-db
+      oracle-db:
+        condition: service_healthy
   oracle-db:
-    image: container-registry.oracle.com/database/standard:${ORACLE_VERSION}
+    image: sath89/oracle-12c
+    volumes:
+      - oracle:/u01/app/oracle/
+    environment:
+      - WEB_CONSOLE=false
+    healthcheck:
+      test: echo "select * from v\xe;" | sqlplus -S sys/oracle as sysdba || exit 1
+      timeout: 3s
+      interval: 30s
+      retries: 30
 
   docs:
     volumes:
@@ -95,4 +107,4 @@ services:
 volumes:
   pip-cache:
   packages:
-  npm:
+  oracle:

@@ -1,9 +1,9 @@
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.oracle',
-        'NAME': 'oracle-db:1521/orcl',
-        'USER': 'oracle',
-        'PASSWORD': 'Oracle',
+        'NAME': 'oracle-db:1521/xe',
+        'USER': 'system',
+        'PASSWORD': 'oracle',
         'TEST': {
             'USER': 'default_test',
             'TBLSPACE': 'default_test_tbls',
@@ -12,9 +12,9 @@ DATABASES = {
     },
     'other': {
         'ENGINE': 'django.db.backends.oracle',
-        'NAME': 'oracle-db:1521/orcl',
-        'USER': 'oracle',
-        'PASSWORD': 'Oracle',
+        'NAME': 'oracle-db:1521/xe',
+        'USER': 'system',
+        'PASSWORD': 'oracle',
         'TEST': {
             'USER': 'other_test',
             'TBLSPACE': 'other_test_tbls',

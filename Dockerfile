@@ -6,6 +6,8 @@ RUN apt-get update \
                           libmemcached-dev \
                           build-essential \
                           mysql-client \
+                          unzip \
+                          libaio1 \
     && apt-get clean
 RUN pip install --upgrade pip
 

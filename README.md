@@ -39,14 +39,23 @@ Simply substitute `sqlite` for any supported database:
 
 `docker-compose run mariadb [args]`
 
-Note: The oracle image requires authentication and is rather large. 
-[See here on how to authenticate](https://docs.oracle.com/cd/E37670_01/E75728/html/oracle-registry-server.html)
-
-`docker-compose run oracle`
-
-If you're a madman you can run all the tests for all databases in parallel:
+And if you're a madman you can run all the tests for all databases in parallel:
 
 `docker-compose up`
+
+#### Oracle
+
+As usual Oracle is a bit more complex to set up. You need to download the latest `instantclient` **zip file**
+[from this page](https://www.oracle.com/technetwork/topics/linuxx86-64soft-092277.html) and place it inside the 
+`./oracle` directory. Ensure only one `.zip` file is present.
+
+The database image is quite large (several gigabytes) and takes a fairly long time to initialise (5-10 minutes). 
+Once it has initialised subsequent starts should be very quick. You may wish to run `docker-compose run oracle-db`
+before running any tests to ensure it initialises correctly.
+
+Once this is done execute:
+
+`docker-compose run oracle`
 
 ### Utilities
 
