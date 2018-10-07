@@ -1,0 +1,98 @@
+version: "2.3"
+services:
+  sqlite:
+    build:
+      context: .
+      args:
+        - PYTHON_VERSION=${PYTHON_VERSION}
+    volumes:
+      - ${DJANGO_PATH}:/django
+      - ./settings:/django/tests/settings
+      - ./entrypoint.sh:/entrypoint.sh
+      - pip-cache:/root/.cache/pip/
+      - packages:/usr/local/lib/python3.5/site-packages/
+    environment:
+    - DJANGO_SETTINGS_MODULE=test_sqlite
+    working_dir: /django
+    entrypoint: /entrypoint.sh python tests/runtests.py
+
+  postgres:
+    environment:
+    - DJANGO_SETTINGS_MODULE=settings.test_postgres
+    - EXTRA_REQUIREMENTS=postgres.txt
+    extends:
+      service: sqlite
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+  postgres-db:
+    image: postgres:${POSTGRES_VERSION}
+    environment:
+    - POSTGRES_USER=django
+    - POSTGRES_PASSWORD=django
+    - POSTGRES_DB=django
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "django"]
+      interval: 1s
+      timeout: 3s
+      retries: 30
+
+  mysql:
+    environment:
+    - DJANGO_SETTINGS_MODULE=settings.test_mysql
+    - EXTRA_REQUIREMENTS=mysql.txt
+    extends:
+      service: sqlite
+    depends_on:
+    - mysql-db
+  mysql-db:
+    image: mysql:${MYSQL_VERSION}
+    entrypoint: ['/entrypoint.sh', '--default-authentication-plugin=mysql_native_password']
+    environment:
+    - MYSQL_USER=django
+    - MYSQL_PASSWORD=django
+    - MYSQL_DATABASE=django
+    - MYSQL_ALLOW_EMPTY_PASSWORD=1
+
+  mariadb:
+    environment:
+    - DJANGO_SETTINGS_MODULE=settings.test_mariadb
+    - EXTRA_REQUIREMENTS=mysql.txt
+    extends:
+      service: sqlite
+    depends_on:
+    - mariadb-db
+  mariadb-db:
+    image: mariadb:${MARIADB_VERSION}
+    environment:
+    - MYSQL_USER=django
+    - MYSQL_PASSWORD=django
+    - MYSQL_DATABASE=django
+    - MYSQL_ALLOW_EMPTY_PASSWORD=1
+
+  oracle:
+    environment:
+    - DJANGO_SETTINGS_MODULE=settings.test_oracle
+    - EXTRA_REQUIREMENTS=oracle.txt
+    extends:
+      service: sqlite
+    depends_on:
+    - oracle-db
+  oracle-db:
+    image: container-registry.oracle.com/database/standard:${ORACLE_VERSION}
+
+  docs:
+    volumes:
+      - ./docs-requirements.txt:/django/tests/requirements/docs.txt
+    environment:
+      - EXTRA_REQUIREMENTS=docs.txt
+    extends:
+      service: sqlite
+
+    entrypoint: /entrypoint.sh
+    command: bash -c "cd docs && make spelling"
+
+volumes:
+  pip-cache:
+  packages:
+  npm:

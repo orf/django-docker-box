@@ -1,7 +1,7 @@
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.oracle',
-        'NAME': 'oracle:1521/orcl',
+        'NAME': 'oracle-db:1521/orcl',
         'USER': 'oracle',
         'PASSWORD': 'Oracle',
         'TEST': {
@@ -12,7 +12,7 @@ DATABASES = {
     },
     'other': {
         'ENGINE': 'django.db.backends.oracle',
-        'NAME': 'oracle:1521/orcl',
+        'NAME': 'oracle-db:1521/orcl',
         'USER': 'oracle',
         'PASSWORD': 'Oracle',
         'TEST': {

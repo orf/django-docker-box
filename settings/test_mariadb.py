@@ -6,7 +6,7 @@ DATABASES = {
         'USER': 'root',
         'PASSWORD': '',
         'NAME': 'django',
-        'HOST': 'mysql-db',
+        'HOST': 'mariadb-db',
         'TEST': {
             'CHARSET': 'UTF8MB4',
         },
@@ -16,7 +16,7 @@ DATABASES = {
         'USER': 'root',
         'PASSWORD': '',
         'NAME': 'django2',
-        'HOST': 'mysql-db',
+        'HOST': 'mariadb-db',
         'TEST': {
             'CHARSET': 'UTF8MB4',
         },

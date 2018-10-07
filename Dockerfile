@@ -2,8 +2,12 @@ ARG PYTHON_VERSION=3.6
 FROM python:${PYTHON_VERSION}
 
 RUN apt-get update \
-    && apt-get install -y libmemcached-dev build-essential \
+    && apt-get install -y libenchant1c2a \
+                          libmemcached-dev \
+                          build-essential \
+                          mysql-client \
     && apt-get clean
+RUN pip install --upgrade pip
 
 COPY entrypoint.sh /entrypoint.sh
 

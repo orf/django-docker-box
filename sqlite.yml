@@ -1,9 +1,0 @@
-version: "2.3"
-services:
-  django:
-    container_name: django-sqlite
-    environment:
-      - DJANGO_SETTINGS_MODULE=test_sqlite
-    extends:
-      file: base.yml
-      service: base

@@ -18,13 +18,14 @@ DATABASES = {
         'USER': 'django',
         'PASSWORD': 'django',
         'NAME': 'django',
-        'HOST': 'postgres'
+        'HOST': 'postgres-db'
     },
     'other': {
         'ENGINE': 'django.db.backends.postgresql',
         'USER': 'django',
+        'NAME': 'django2',
         'PASSWORD': 'django',
-        'HOST': 'postgres'
+        'HOST': 'postgres-db'
     }
 }
 
