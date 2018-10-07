@@ -4,7 +4,7 @@ Run the django test suite across multiple databases.
 
 Inspired by [django-box](https://github.com/django/django-box) this project contains 
 some compose definitions to quickly run the Django test suite across multiple Python and
-database versions.
+database versions, including Oracle.
 
 ## Quickstart
 

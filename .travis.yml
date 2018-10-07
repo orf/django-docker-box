@@ -1,0 +1,17 @@
+sudo: false
+
+python:
+  - 3.5
+  - 3.6
+  - 3.7
+
+env:
+  - COMPOSE_APP=sqlite
+  - COMPOSE_APP=postgres
+  - COMPOSE_APP=mysql
+  - COMPOSE_APP=mariadb
+  - COMPOSE_APP=oracle
+
+script:
+  - git clone git@github.com:django/django.git --depth=1
+  - docker-compose run $COMPOSE_APP queries
