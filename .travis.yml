@@ -1,18 +1,30 @@
 sudo: required
 services:
-  - docker
+- docker
 language: python
 python:
-  - "3.5"
-  - "3.6"
-  - "3.7"
+- '3.5'
+- '3.6'
 
+stages:
+- name: install
+  if: env(COMPOSE_APP) = oracle
+
+install:
+  - wget 'https://github.com/cbandy/travis-oracle/archive/v2.0.3.tar.gz'
+  - mkdir -p .travis/oracle
+  - tar x -C .travis/oracle --strip-components=1 -f v2.0.3.tar.gz
+
+script:
+- git clone https://github.com/django/django.git --depth=1
+- docker-compose run $COMPOSE_APP queries
 env:
+  matrix:
   - COMPOSE_APP=sqlite
   - COMPOSE_APP=postgres
   - COMPOSE_APP=mysql
   - COMPOSE_APP=mariadb
-
-script:
-  - git clone https://github.com/django/django.git --depth=1
-  - docker-compose run $COMPOSE_APP queries
+  - COMPOSE_APP=oracle
+  global:
+  - secure: yA71xA/JFOmsB+E3K8d2lknY0r7bFbZEoa/7Yalb6hil1q40kxLW3mPVZ0QOAXMU2t82TdeUi0tC79ZZKDSUhJ9lm0svT/JrX8ABt7aZLEIa3nVrMhkdGyXuioEJR/1uRTenGI4jnP94WlUqyoM9z/Tqh1spnuhMZuFVDW0ItYim8EQhsKgfYz3uYq869hdExTNf+vBOup6rE6oQNh/Ycp7ijegN8Ub368SNsY58v8L+/P2poo55RZfnbRkj0ThqQ7e2cQI+HGSjVZ4ywmgILZxn46JvX4wBwTEZMCfeWwla/ig/MSzkj7M+FayNjb6rqlJZlj2zUjhCO9QISk9cKzsZME/jdF2tYULLuCvhHkiPyAW4PLwSG/eogwZTRNIjm9rVnIaVowHnD5h04Lknbr844iKKReeypoQJ8qw0cXVIo3FTS9kLny76hSEdpFkqzj9S1vTKPQr3qGrhd8dVntzG8Yb016u9K9npCeX7soulkDxO6KnyfSF/ytizf+Pm9aBbJkHLjZ46ikXep+EVEOULURDK72ImlBjF/M5sXNxGUAJv5q0rB4weum2Ui/G57LMqQhe3UWOTExWyx1GIvKYFzXwW71R8YheAFXBnV/IHYo8cTIZjiONG91muxP8QZu+P5xkMrIL25fB7PlkUV70MrWwquJLe8flePSM1Or0=
+  - secure: o9LpKpjs6pJenEaZXEJoidVg8IWIvGpwQV5wxDoG3pjsLhCrgF62mdK3TasHPDKWkE6rblQclvgLfEo7+JcsNYGmZoJLMsTXWySlmNaXHXh6ejfzxA0/wBqNjomVAK54CvlWlRhyvlCaUQUbc1AD5to0VqW+JGzDlmjNqfCQ7f23FTjGrGLycXDOngRiYPkX6YWmvEweFMlrgFz7VQY98XAC4EAXHDSrCUAzFtlTz02GFJvf/4muAdOtGVGQrl1XrmX7qRFSI7k2TvtpJ3JK3usZsuTo/xOLfUZKoqRDXNCYRTjVtds7UDemCNZFrX9l2MIXCbcGSJR5JItSkBxpJqRpHq7f8r7nxHwsfLCxpw+MnFpe9Q7MNGW8VT9ng2n+f7Ljt39z+pXd5PSm2ijOpxHCS99BHKnupbMdPhBjOHALVQvn7YSb0CvcX2+4f32A3KJTEgH3NTxX2rWLetnaPXSECoZztcpzolLomEU8alL1B1dxCzRluYiZmwqDTBKbMgR5iduZbjatlJvRbxmffMOON/K4az/isfj+elR7ZeBrCrPAG7rUFEFPesJyInA/7szLJOx/DKWmtopIOyzpSg/6lOiZmIX0Y51TO+B6xp8OMRUH+fqJe+NNLlyFGb0XdTpg6eVCX1+GcAKl3Pq6bdnXZZNyEjt3uPFhG1axYDo=
