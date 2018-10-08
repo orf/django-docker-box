@@ -8,7 +8,7 @@ DATABASES = {
         'NAME': 'django',
         'HOST': 'mysql-db',
         'TEST': {
-            'CHARSET': 'UTF8MB4',
+            'CHARSET': 'utf8',
         },
     },
     'other': {
@@ -18,7 +18,7 @@ DATABASES = {
         'NAME': 'django2',
         'HOST': 'mysql-db',
         'TEST': {
-            'CHARSET': 'UTF8MB4',
+            'CHARSET': 'utf8',
         },
     },
 }
