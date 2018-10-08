@@ -60,7 +60,7 @@ And wait for it to initialize. Once it has, use ctrl+c to terminate it and execu
 
 `docker-compose run oracle`
 
-To run the test suite against it.
+To run the test suite against it. All other databases support different versions, however Oracle does not.
 
 ### Utilities
 
@@ -77,7 +77,6 @@ To run the docs spellchecker:
 | `POSTGRES_VERSION` | `9.6` | The version of Postgres to use |
 | `MYSQL_VERSION` | `8` | The mysql version to use |
 | `MARIADB_VERSION` | `10.3` | The mariadb version to use |
-| `ORACLE_VERSION` | `12.1.0.2` | The oracle version to use |
 
 
 ## Why?
