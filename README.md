@@ -14,9 +14,9 @@ Ensure that the `DJANGO_PATH` variable is correct. You can either customize the 
 
 `export DJANGO_PATH=~/projects/django/`
  
-Or create a symbolic link to `django-src` inside this source:
+Or create a symbolic link to `django` inside this source:
  
-`ln -s [path to django] [django docker box path]/django-src`
+`ln -s [path to django] [django docker box path]/django`
 
 If you see an error like `ERROR: Named volume "django:/django:rw" is used in service "sqlite" but no declaration was found in the volumes section.` 
 then your `DJANGO_PATH` is incorrect.
