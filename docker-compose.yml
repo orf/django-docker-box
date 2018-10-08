@@ -1,34 +1,41 @@
 # ToDo: Refactor this 'extends: sqlite' nonsense out into yaml merging using &.
 version: "2.3"
+
+x-base: &base
+  build:
+    context: .
+    args:
+    - PYTHON_VERSION=${PYTHON_VERSION}
+  volumes:
+  - ${DJANGO_PATH}:/django
+  - ./settings:/django/tests/settings
+  - ./entrypoint.sh:/entrypoint.sh
+  - pip-cache:/root/.cache/pip/
+  # Using yaml merging here overwrites the arrays. Simpler to just mount this in every service.
+  - ./oracle:/oracle
+  working_dir: /django
+  entrypoint: /entrypoint.sh python tests/runtests.py
+
 services:
   sqlite:
-    build:
-      context: .
-      args:
-        - PYTHON_VERSION=${PYTHON_VERSION}
-    volumes:
-      - ${DJANGO_PATH}:/django
-      - ./settings:/django/tests/settings
-      - ./entrypoint.sh:/entrypoint.sh
-      - pip-cache:/root/.cache/pip/
+    <<: *base
     environment:
-    - DJANGO_SETTINGS_MODULE=test_sqlite
-    working_dir: /django
-    entrypoint: /entrypoint.sh python tests/runtests.py
-
-  postgres:
-    environment:
-    - DJANGO_SETTINGS_MODULE=settings.test_postgres
-    - EXTRA_REQUIREMENTS=postgres.txt
-    extends:
-      service: sqlite
+    - DJANGO_SETTINGS_MODULE=settings.test_sqlite
     depends_on:
-      postgres-db:
-        condition: service_healthy
       memcached:
         condition: service_healthy
       memcached2:
         condition: service_healthy
+
+  postgres:
+    <<: *base
+    environment:
+    - DJANGO_SETTINGS_MODULE=settings.test_postgres
+    - EXTRA_REQUIREMENTS=postgres.txt
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+
   postgres-db:
     image: postgres:${POSTGRES_VERSION}
     environment:
@@ -44,11 +51,10 @@ services:
       retries: 30
 
   mysql:
+    <<: *base
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_mysql
     - EXTRA_REQUIREMENTS=mysql.txt
-    extends:
-      service: sqlite
     depends_on:
     - mysql-db
   mysql-db:
@@ -63,11 +69,10 @@ services:
     - MYSQL_ALLOW_EMPTY_PASSWORD=1
 
   mariadb:
+    <<: *base
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_mariadb
     - EXTRA_REQUIREMENTS=mysql.txt
-    extends:
-      service: sqlite
     depends_on:
     - mariadb-db
   mariadb-db:
@@ -81,13 +86,10 @@ services:
     - MYSQL_ALLOW_EMPTY_PASSWORD=1
 
   oracle:
+    <<: *base
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_oracle
     - EXTRA_REQUIREMENTS=oracle.txt
-    volumes:
-      - ./oracle:/oracle
-    extends:
-      service: sqlite
     depends_on:
       oracle-db:
         condition: service_healthy
@@ -122,13 +124,11 @@ services:
       retries: 10
 
   docs:
+    <<: *base
     volumes:
       - ./docs-requirements.txt:/django/tests/requirements/docs.txt
     environment:
       - EXTRA_REQUIREMENTS=docs.txt
-    extends:
-      service: sqlite
-
     entrypoint: /entrypoint.sh
     command: bash -c "cd docs && make spelling"
 
