@@ -29,6 +29,22 @@ DATABASES = {
     }
 }
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    },
+    'memcached': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': 'memcached:11211',
+        'KEY_PREFIX': 'memcached_1_'
+    },
+    'memcached_2': {
+        'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
+        'LOCATION': 'memcached:11211',
+        'KEY_PREFIX': 'memcached_2_'
+    }
+}
+
 SECRET_KEY = "django_tests_secret_key"
 
 # Use a fast hasher to speed up tests.
