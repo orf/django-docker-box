@@ -19,7 +19,7 @@ Or create a symbolic link to `django` inside this source:
 `ln -s [path to django] [django docker box path]/django`
 
 If you see an error like `ERROR: Named volume "django:/django:rw" is used in service "sqlite" but no declaration was found in the volumes section.` 
-then your `DJANGO_PATH` is incorrect.
+then your `DJANGO_PATH` is incorrect. Make sure it starts with a `./` or a `/`
 
 Afterwards, simply run:
 
@@ -67,7 +67,7 @@ To run the docs spellchecker:
 
 | Environment Variable | Default | Description |
 | --- | --- | --- |
-| `DJANGO_PATH` | `django/` | The path to the Django codebase on your local machine |
+| `DJANGO_PATH` | `./django/` | The path to the Django codebase on your local machine |
 | `PYTHON_VERSION` | `3.6` | The python version to run tests against |
 | `POSTGRES_VERSION` | `9.6` | The version of Postgres to use |
 | `MYSQL_VERSION` | `8` | The mysql version to use |
