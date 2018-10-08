@@ -1,3 +1,4 @@
+# ToDo: Refactor this 'extends: sqlite' nonsense out into yaml merging using &.
 version: "2.3"
 services:
   sqlite:
@@ -25,6 +26,8 @@ services:
       postgres-db:
         condition: service_healthy
       memcached:
+        condition: service_healthy
+      memcached2:
         condition: service_healthy
   postgres-db:
     image: postgres:${POSTGRES_VERSION}
@@ -100,7 +103,17 @@ services:
       interval: 30s
       retries: 30
 
+  # There are issues running the tests with 1 memcached server in parallel.
+  # For now use two.
   memcached:
+    image: memcached:1.5-alpine
+    healthcheck:
+      test: /usr/bin/nc -z 127.0.0.1 11211 || exit 1
+      timeout: 1s
+      interval: 30s
+      retries: 10
+
+  memcached2:
     image: memcached:1.5-alpine
     healthcheck:
       test: /usr/bin/nc -z 127.0.0.1 11211 || exit 1
