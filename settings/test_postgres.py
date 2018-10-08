@@ -36,12 +36,12 @@ CACHES = {
     'memcached': {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
         'LOCATION': 'memcached:11211',
-        'KEY_PREFIX': 'memcached_1_'
+        'KEY_PREFIX': '1:'
     },
     'memcached_2': {
         'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
         'LOCATION': 'memcached:11211',
-        'KEY_PREFIX': 'memcached_2_'
+        'KEY_PREFIX': '2:'
     }
 }
 
