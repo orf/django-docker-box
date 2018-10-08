@@ -8,7 +8,7 @@ install: skip
 
 script:
 - git clone https://github.com/django/django.git --depth=1
-- docker-compose run $COMPOSE_APP queries
+- docker-compose run $COMPOSE_APP
 
 env:
 - COMPOSE_APP=sqlite PYTHON_VERSION=3.5
