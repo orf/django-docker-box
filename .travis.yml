@@ -3,15 +3,21 @@ dist: trusty
 services:
 - docker
 language: python
-python:
-- '3.5'
-- '3.6'
+
 script:
 - git clone https://github.com/django/django.git --depth=1
 - docker-compose run $COMPOSE_APP queries
+
 env:
-- COMPOSE_APP=sqlite
-- COMPOSE_APP=postgres
-- COMPOSE_APP=mysql
-- COMPOSE_APP=mariadb
-- COMPOSE_APP=oracle
+- COMPOSE_APP=sqlite PYTHON_VERSION=3.5
+- COMPOSE_APP=sqlite PYTHON_VERSION=3.6
+- COMPOSE_APP=sqlite PYTHON_VERSION=3.7
+- COMPOSE_APP=postgres PYTHON_VERSION=3.5
+- COMPOSE_APP=postgres PYTHON_VERSION=3.6
+- COMPOSE_APP=postgres PYTHON_VERSION=3.7
+- COMPOSE_APP=mysql PYTHON_VERSION=3.5
+- COMPOSE_APP=mysql PYTHON_VERSION=3.6
+- COMPOSE_APP=mysql PYTHON_VERSION=3.7
+- COMPOSE_APP=mariadb PYTHON_VERSION=3.5
+- COMPOSE_APP=mariadb PYTHON_VERSION=3.6
+- COMPOSE_APP=mariadb PYTHON_VERSION=3.7

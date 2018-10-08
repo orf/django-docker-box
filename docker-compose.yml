@@ -10,7 +10,6 @@ services:
       - ./settings:/django/tests/settings
       - ./entrypoint.sh:/entrypoint.sh
       - pip-cache:/root/.cache/pip/
-      - packages:/usr/local/lib/python3.5/site-packages/
     environment:
     - DJANGO_SETTINGS_MODULE=test_sqlite
     working_dir: /django
@@ -31,6 +30,8 @@ services:
     - POSTGRES_USER=django
     - POSTGRES_PASSWORD=django
     - POSTGRES_DB=django
+    volumes:
+      - postgres:/var/lib/postgresql
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "django"]
       interval: 1s
@@ -48,6 +49,8 @@ services:
   mysql-db:
     image: mysql:${MYSQL_VERSION}
     entrypoint: ['/entrypoint.sh', '--default-authentication-plugin=mysql_native_password']
+    volumes:
+      - mysql:/var/lib/mysql
     environment:
     - MYSQL_USER=django
     - MYSQL_PASSWORD=django
@@ -64,6 +67,8 @@ services:
     - mariadb-db
   mariadb-db:
     image: mariadb:${MARIADB_VERSION}
+    volumes:
+    - mariadb:/var/lib/mysql
     environment:
     - MYSQL_USER=django
     - MYSQL_PASSWORD=django
@@ -106,5 +111,7 @@ services:
 
 volumes:
   pip-cache:
-  packages:
   oracle:
+  mysql:
+  mariadb:
+  postgres:
