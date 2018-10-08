@@ -14,7 +14,7 @@ install:
     wget 'https://github.com/cbandy/travis-oracle/archive/v2.0.3.tar.gz'
     mkdir -p .travis/oracle
     tar x -C .travis/oracle --strip-components=1 -f v2.0.3.tar.gz
-    export ORACLE_FILE='instantclient/121020/oracle-instantclient12.1-basic-12.1.0.2.0-1.x86_64.zip'
+    export ORACLE_FILE='instantclient/183000/instantclient-basic-linux.x64-18.3.0.0.0dbru.zip'
     export ORACLE_COOKIE=ic_linuxx8664
     .travis/oracle/download.sh
   fi
