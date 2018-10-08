@@ -1,11 +1,13 @@
 sudo: required
+dist: trusty
 services:
 - docker
 language: python
 python:
 - '3.5'
-- '3.6'
+#- '3.6'
 install:
+- env
 - |
   if [ $COMPOSE_APP == "oracle" ]; then
     wget 'https://github.com/cbandy/travis-oracle/archive/v2.0.3.tar.gz'
@@ -20,10 +22,10 @@ script:
 - docker-compose run $COMPOSE_APP queries
 env:
   matrix:
-  - COMPOSE_APP=sqlite
-  - COMPOSE_APP=postgres
-  - COMPOSE_APP=mysql
-  - COMPOSE_APP=mariadb
+#  - COMPOSE_APP=sqlite
+#  - COMPOSE_APP=postgres
+#  - COMPOSE_APP=mysql
+#  - COMPOSE_APP=mariadb
   - COMPOSE_APP=oracle
   global:
   - secure: LIW6lYKKTGzces+EaXV0RGk2AgGkCy96HmsfJWYQhXOPLXBmnOVHE1/Slm6L5oAFbdextTaSIa1d8uDr8nzd8DW497MfSlH3jxQfjWTSwV2dcx39ATKumP7XALcOpHI8pwVSPXdDIyGsHA6QipSU7ndrFEnMSDdaMj19Lx2+8k9GI6wQy1AfoZDpKzQFWz4Pu1RKg7oGFynpr9uziIfV9tgOCSQWs5dan+bVQrAOQ4ncHcA0RusiAjmPVML9LHk09UEiJrDTD0HbZqpyEGmcoqbjQL0zFANxRJqAZy+Kylyv+naWCFXYkye72hDx8Pe5daGnQbi19X+S0kjNAu8ik/7cEIw08hG/BXMujelMEzOb4lYSE4XLNdmyXbJqjWLikcYm408FRt0BQwHVzmsuQ4dvL5IWlMq1UodQ4ED0yGQMHQEnIR0xADi+kmot1RGh8HtZwljIMy6lnxJIV1ikEjG2kEKY87QGbD8zTjTduFuQEZv9KZFwpOxbY1XuWZSuKNoZhFSIu7QTQnm31zJ+uSN8CFmKPgyX/4yf3ZODQPuunccEvxozvxyLeZ5qD/U7ANmcaaZXpNg2aQne8W4xWw0svIwr/piT1hpmfS5fbziOTCPcyUr4rWFRnT23D7BCi56wuqm+qcaUkiSptL9YKG6g/FRbiLd3/eTABZH8G1Q=
