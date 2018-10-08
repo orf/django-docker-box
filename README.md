@@ -52,12 +52,15 @@ As usual Oracle is a bit more complex to set up. You need to download the latest
 `./oracle` directory. Ensure only one `.zip` file is present.
 
 The database image is quite large (several gigabytes) and takes a fairly long time to initialise (5-10 minutes). 
-Once it has initialised subsequent starts should be very quick. You may wish to run `docker-compose run oracle-db`
-before running any tests to ensure it initialises correctly.
+Once it has initialised subsequent starts should be very quick. To begin this process run:
+ 
+ `docker-compose run oracle-db`
 
-Once this is done execute:
+And wait for it to initialize. Once it has, use ctrl+c to terminate it and execute:
 
 `docker-compose run oracle`
+
+To run the test suite against it.
 
 ### Utilities
 
