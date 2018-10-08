@@ -8,7 +8,7 @@ python:
 
 
 install:
-  - env | grep ORACLE_LOGIN
+  - env
   - |
   if [ $COMPOSE_APP == "oracle" ]; then
     wget 'https://github.com/cbandy/travis-oracle/archive/v2.0.3.tar.gz'
