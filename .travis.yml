@@ -5,22 +5,13 @@ services:
 language: python
 python:
 - '3.5'
-install:
-- |
-  if [ $COMPOSE_APP == "oracle" ]; then
-    wget 'https://github.com/cbandy/travis-oracle/archive/v2.0.3.tar.gz'
-    mkdir -p .travis/oracle
-    tar x -C .travis/oracle --strip-components=1 -f v2.0.3.tar.gz
-    export ORACLE_FILE='instantclient/183000/instantclient-basic-linux.x64-18.3.0.0.0dbru.zip'
-    export ORACLE_COOKIE=ic_linuxx8664
-    .travis/oracle/download.sh
-  fi
+- '3.6'
 script:
 - git clone https://github.com/django/django.git --depth=1
 - docker-compose run $COMPOSE_APP queries
 env:
-  matrix:
-  - COMPOSE_APP=oracle
-  global:
-  - secure: MjxNqrOJACRkc6rFuHDmUIWZr0wn1xS1erhjmmtTICW4WgnDvQbjssgaP6qrIGJ/O9RoA8WxVsAhC6G2Y7PsKwKgZPgFQsGkaps6wG5RC84PfdJfjMQP0tIPFpRrsMffn0dPI7+w9oKdSRJys59w2S0Sl7nh4oemsO5xZh7T94rOerVUX1O5TOFAqCTOuzKBW/riCcOcUtbBz13v/KMvn/Rs42G8/pAitGpbop43tCAgujWY8v7vop2TJsmiEqoT1NnvsGoKrBZIa4Id/rpwaQDNf/upq6KPoxhc+CQjB4gYreEAiG+riZOrsBw/lOI5fCKSD8qdQR0IAj7G40z1ysefGL7zcZSzdkfE3FdIAc6DKwJNDEwG/Be5ouXbjIzH6q8Szf+PuGOiMy+70LWXZPEzoodF23tZzuBceMUD6SVTpmV2S4ve5SGxbFASNpnvx4E2WNOxNqNS8RZyvXrPZEqvfve0LlnQmcmJXivl5+HcyKDZeQGQAQHaB1pN9nruMqBpCo8pF0JVc55HtYppZqTsnClq4tI3H+TktJIiUxe7h5lTzF3xPJWs9AtPK7XktfShwuAyzBn9K9AfNGD68HkOScAVU1MyFMPvy1L0lp1Si8QTRwNNvjywiQRCcj/U/WJ0coxigkSnNLrCEqflLrHPZHaxVekOgpLeCs/+708=
-  - secure: oAFfgIqT23VDSiRXP5aVfZktWlaf8d/+6WVeaxVPWovYDWhmy0oO6MB5oj9sIrG9XinudD1Vze0Lx7c/BvgPcW31MoyAF0K+jF3KVjCYQLSovG/P0bHY7rKII8x0RQ5oHm1R2EulYJCTNgbF2xbHKkLb59EuEGyxf+Ehz4qSeevfp7TcxMuIBzCpaT8QvlvOlpgoLaknCXD57afM7S2lQ4qy5HpNsjndj2R1e0ThYh4Fsj7eI5PeW3ub9B1D7NdMQ2tg8XS99m0/90LjN7ygCYUcBsj39rBF1PhSeMed65EREQr14lF8bs1BHEIwZjiBsandcELeHYc4o87Pi2qezni5JnCSawKBSzaCdYtqPVi/i+gflHrYcxLovOhi1pF/0BgOZjx9r7OQcZp2+eO3PbL5/QeLTDe1vBsan3jQXlM8AeH0gIv61pF5VOqPYIDejHQ3ssWvr3+PAIXtAZi8RydjmU1k0gdc71/JyjMYfk/sJw5740XBavcuecXi7NoKhFUjb3VAg//1jgcNqEXRbfdf6UFJWlrJIkwDAPBzvJnqY1p3Rtkd7d7rPneIZD1VEu6RO2UieNQVryNjszpHZYMMhE+P2ZJ19XwFOPA46Tm3Jaa2FQSIcgOkR2eY3v1qPwdxNlqLHNJLIqbguUxzOT91AZVA/FuXhIPVTO1tyEY=
+- COMPOSE_APP=sqlite
+- COMPOSE_APP=postgres
+- COMPOSE_APP=mysql
+- COMPOSE_APP=mariadb
+- COMPOSE_APP=oracle
