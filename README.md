@@ -25,7 +25,7 @@ then your `DJANGO_PATH` is incorrect. Make sure it starts with a `./` or a `/`
 
 Afterwards, simply run:
 
-`docker-compose run sqlite`
+`docker-compose run --rm sqlite`
 
 All arguments are passed to `runtests.py`. Before they are run all specific dependencies are 
 installed (and cached across runs).
@@ -35,11 +35,11 @@ installed (and cached across runs).
 
 Simply substitute `sqlite` for any supported database:
 
-`docker-compose run postgres [args]`
+`docker-compose run --rm postgres [args]`
 
-`docker-compose run mysql [args]`
+`docker-compose run --rm mysql [args]`
 
-`docker-compose run mariadb [args]`
+`docker-compose run --rm mariadb [args]`
 
 And if you're a madman you can run all the tests for all databases in parallel:
 
@@ -58,7 +58,7 @@ Once it has initialised subsequent starts should be very quick. To begin this pr
 
 And wait for it to initialize. Once it has, use ctrl+c to terminate it and execute:
 
-`docker-compose run oracle`
+`docker-compose run --rm oracle`
 
 To run the test suite against it. All other databases support different versions, however Oracle does not.
 
@@ -66,7 +66,7 @@ To run the test suite against it. All other databases support different versions
 
 To run the docs spellchecker:
 
-`docker-compose run docs`
+`docker-compose run --rm docs`
 
 ## Configuration
 

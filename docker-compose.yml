@@ -7,13 +7,13 @@ x-base: &base
     args:
     - PYTHON_VERSION=${PYTHON_VERSION}
   volumes:
-  - ${DJANGO_PATH}:/django
-  - ./settings:/django/tests/settings
+  - ${DJANGO_PATH}:/tests/django/
+  - ./settings:/tests/django/tests/settings
+  - ./extra-requirements:/tests/django/tests/requirements/extra/
   - ./entrypoint.sh:/entrypoint.sh
   - ${PIP_CACHE_VOLUME}:/root/.cache/pip/
   # Using yaml merging here overwrites the arrays. Simpler to just mount this in every service.
   - ./oracle:/oracle
-  working_dir: /django
   entrypoint: /entrypoint.sh python tests/runtests.py
 
 services:
@@ -26,6 +26,12 @@ services:
         condition: service_healthy
       memcached2:
         condition: service_healthy
+
+  sqlite_gis:
+    <<: *base
+    environment:
+    - DJANGO_SETTINGS_MODULE=settings.test_sqlite_gis
+    - EXTRA_PACKAGES=libsqlite3-mod-spatialite binutils libproj-dev gdal-bin libgeoip1 python-gdal
 
   postgres:
     <<: *base
@@ -55,6 +61,7 @@ services:
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_mysql
     - EXTRA_REQUIREMENTS=mysql.txt
+    - EXTRA_PACKAGES=mysql-client
     depends_on:
     - mysql-db
   mysql-db:
@@ -90,6 +97,8 @@ services:
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_oracle
     - EXTRA_REQUIREMENTS=oracle.txt
+    - EXTRA_PACKAGES=unzip libaio1
+    - IS_ORACLE=1
     depends_on:
       oracle-db:
         condition: service_healthy
@@ -125,12 +134,18 @@ services:
 
   docs:
     <<: *base
-    volumes:
-      - ./docs-requirements.txt:/django/tests/requirements/docs.txt
     environment:
-      - EXTRA_REQUIREMENTS=docs.txt
+      - EXTRA_REQUIREMENTS=extra/docs.txt
+      - EXTRA_PACKAGES=libenchant1c2a
     entrypoint: /entrypoint.sh
     command: bash -c "cd docs && make spelling"
+    user: root
+
+  flake8:
+    <<: *base
+    environment:
+    - EXTRA_REQUIREMENTS=extra/linting.txt
+    entrypoint: /entrypoint.sh flake8
 
 volumes:
   pip-cache:

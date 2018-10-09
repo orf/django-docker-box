@@ -6,16 +6,20 @@ language: python
 cache: pip
 install: skip
 
-script:
-- export PIP_CACHE_VOLUME=$HOME/.cache/pip
-- git clone https://github.com/django/django.git --depth=1
-- docker-compose run $COMPOSE_APP -v2
+stages:
+- linting
+- test
 
 env:
 # Sqlite:
 - COMPOSE_APP=sqlite PYTHON_VERSION=3.5
 - COMPOSE_APP=sqlite PYTHON_VERSION=3.6
 - COMPOSE_APP=sqlite PYTHON_VERSION=3.7
+
+# Sqlite gis:
+- COMPOSE_APP=sqlite_gis PYTHON_VERSION=3.5
+- COMPOSE_APP=sqlite_gis PYTHON_VERSION=3.6
+- COMPOSE_APP=sqlite_gis PYTHON_VERSION=3.7
 
 # Postgres:
 - COMPOSE_APP=postgres PYTHON_VERSION=3.5 POSTGRES_VERSION=9.4
@@ -56,7 +60,22 @@ env:
 - COMPOSE_APP=mariadb PYTHON_VERSION=3.7 MARIADB_VERSION=10.2
 - COMPOSE_APP=mariadb PYTHON_VERSION=3.7 MARIADB_VERSION=10.3
 
-# ToDo: Enable these at some point in the future, once permissions are fixed in volumes
-#- COMPOSE_APP=docs PYTHON_VERSION=3.5
-#- COMPOSE_APP=docs PYTHON_VERSION=3.6
-#- COMPOSE_APP=docs PYTHON_VERSION=3.7
+matrix:
+  include:
+  - env: COMPOSE_APP=flake8
+    stage: linting
+  - env: COMPOSE_APP=docs
+    stage: linting
+
+script:
+- export PIP_CACHE_VOLUME=$HOME/.cache/pip/
+# Ensure the cache directory works with docker. It is extracted with
+# the 'travis' user owning it
+- sudo chown -R root:root $HOME/.cache/pip/
+- git clone https://github.com/django/django.git --depth=1
+- |
+  if [[ $COMPOSE_APP == *_gis ]]; then
+    docker-compose run $COMPOSE_APP gis_tests -v2
+  else
+    docker-compose run $COMPOSE_APP
+  fi

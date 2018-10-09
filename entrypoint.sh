@@ -8,17 +8,25 @@ if [ -z "$(ls -A ./django/)" ]; then
    exit 1
 fi
 
-sudo pip install -r tests/requirements/py3.txt
+if [ -n "$EXTRA_PACKAGES" ]; then
+    echo "Installing extra packages"
+    sudo apt install -y $(eval "for word in ${EXTRA_PACKAGES}; do echo \$word; done")
+fi
+
+sudo pip install -r django/tests/requirements/py3.txt
 
 if [ -n "$EXTRA_REQUIREMENTS" ]; then
-    sudo pip install -r tests/requirements/${EXTRA_REQUIREMENTS}
+    sudo pip install -r django/tests/requirements/${EXTRA_REQUIREMENTS}
 fi
 
-if compgen -G "/oracle/*.zip" > /dev/null; then
-    sudo mkdir -p /opt/oracle
-    sudo unzip /oracle/*.zip -d /opt/oracle
-    sudo bash -c "echo /opt/oracle/instantclient* > /etc/ld.so.conf.d/oracle-instantclient.conf"
-    sudo ldconfig
+if [ -n "$IS_ORACLE" ]; then
+    if compgen -G "/oracle/*.zip" > /dev/null; then
+        sudo mkdir -p /opt/oracle
+        sudo unzip /oracle/*.zip -d /opt/oracle
+        sudo bash -c "echo /opt/oracle/instantclient* > /etc/ld.so.conf.d/oracle-instantclient.conf"
+        sudo ldconfig
+    fi
 fi
-
+cd django/
+echo "Running $@"
 exec $@
