@@ -10,7 +10,7 @@ x-base: &base
   - ${DJANGO_PATH}:/django
   - ./settings:/django/tests/settings
   - ./entrypoint.sh:/entrypoint.sh
-  - pip-cache:/root/.cache/pip/
+  - ${PIP_CACHE_VOLUME}:/root/.cache/pip/
   # Using yaml merging here overwrites the arrays. Simpler to just mount this in every service.
   - ./oracle:/oracle
   working_dir: /django

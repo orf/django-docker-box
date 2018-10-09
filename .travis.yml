@@ -3,12 +3,13 @@ dist: trusty
 services:
 - docker
 language: python
-
+cache: pip
 install: skip
 
 script:
+- export PIP_CACHE_VOLUME=$HOME/.cache/pip
 - git clone https://github.com/django/django.git --depth=1
-- docker-compose run $COMPOSE_APP
+- docker-compose run $COMPOSE_APP -v2
 
 env:
 # Sqlite:
