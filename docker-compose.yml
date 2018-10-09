@@ -80,6 +80,7 @@ services:
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_mariadb
     - EXTRA_REQUIREMENTS=mysql.txt
+    - EXTRA_PACKAGES=mysql-client
     depends_on:
     - mariadb-db
   mariadb-db:
