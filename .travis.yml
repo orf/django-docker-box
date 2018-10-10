@@ -112,3 +112,6 @@ script:
   else
     docker-compose run $COMPOSE_APP
   fi
+
+after_failure:
+  - docker-compose logs $COMPOSE_APP-db
