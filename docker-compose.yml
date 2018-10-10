@@ -58,7 +58,7 @@ services:
   postgres-gis:
     <<: *base
     environment:
-    - DJANGO_SETTINGS_MODULE=settings.test_postgres_gis
+    - DJANGO_SETTINGS_MODULE=settings.test_postgis
     - EXTRA_REQUIREMENTS=postgres.txt
     depends_on:
       postgres-db-gis:
