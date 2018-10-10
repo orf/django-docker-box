@@ -1,6 +1,6 @@
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.contrib.gis.db.backends.mysql',
         'USER': 'root',
         'PASSWORD': '',
         'NAME': 'django',
@@ -10,7 +10,7 @@ DATABASES = {
         },
     },
     'other': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.contrib.gis.db.backends.mysql',
         'USER': 'root',
         'PASSWORD': '',
         'NAME': 'django2',

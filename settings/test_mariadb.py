@@ -1,5 +1,3 @@
-from test_sqlite import *  # NOQA
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
