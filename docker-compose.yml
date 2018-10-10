@@ -60,6 +60,7 @@ services:
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_postgis
     - EXTRA_REQUIREMENTS=postgres.txt
+    - EXTRA_PACKAGES=binutils libproj-dev gdal-bin libgeoip1 python-gdal
     depends_on:
       postgres-db-gis:
         condition: service_healthy
