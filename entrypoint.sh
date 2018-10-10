@@ -8,11 +8,6 @@ if [ -z "$(ls -A ./django/)" ]; then
    exit 1
 fi
 
-if [ -n "$EXTRA_PACKAGES" ]; then
-    echo "Installing extra packages"
-    sudo apt install -y $(eval "for word in ${EXTRA_PACKAGES}; do echo \$word; done")
-fi
-
 sudo pip install -r django/tests/requirements/py3.txt
 
 if [ -n "$EXTRA_REQUIREMENTS" ]; then

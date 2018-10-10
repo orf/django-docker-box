@@ -4,7 +4,15 @@ FROM python:${PYTHON_VERSION}
 RUN apt-get update \
     && apt-get install -y libmemcached-dev \
                           build-essential \
-                          sudo
+                          sudo \
+                          # GeoDjango requirements: \
+                          libsqlite3-mod-spatialite binutils libproj-dev gdal-bin libgeoip1 python-gdal \
+                          # MySQL: \
+                          mysql-client \
+                          # Oracle: \
+                          unzip libaio1 \
+                          # Docs:
+                          libenchant1c2a
 
 RUN groupadd -r test && useradd --no-log-init -r -g test test
 RUN echo "test ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/test && \
