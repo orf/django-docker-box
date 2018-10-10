@@ -12,7 +12,8 @@ RUN apt-get update \
                           # Oracle: \
                           unzip libaio1 \
                           # Docs:
-                          libenchant1c2a
+                          libenchant1c2a \
+    && apt-get clean
 
 RUN groupadd -r test && useradd --no-log-init -r -g test test
 RUN echo "test ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/test && \
