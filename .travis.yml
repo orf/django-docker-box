@@ -110,5 +110,5 @@ script:
   if [[ $COMPOSE_APP == *-gis ]]; then
     docker-compose run $COMPOSE_APP gis_tests -v2
   else
-    docker-compose run $COMPOSE_APP -v2
+    docker-compose run $COMPOSE_APP
   fi
