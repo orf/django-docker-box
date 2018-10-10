@@ -18,14 +18,14 @@ DATABASES = {
         'USER': 'django',
         'PASSWORD': 'django',
         'NAME': 'django',
-        'HOST': 'postgres-db'
+        'HOST': 'postgres-gis-db'
     },
     'other': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'USER': 'django',
         'NAME': 'django2',
         'PASSWORD': 'django',
-        'HOST': 'postgres-db'
+        'HOST': 'postgres-gis-db'
     }
 }
 
