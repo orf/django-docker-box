@@ -27,7 +27,7 @@ services:
       memcached2:
         condition: service_healthy
 
-  sqlite_gis:
+  sqlite-gis:
     <<: *base
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_sqlite_gis
@@ -41,8 +41,7 @@ services:
     depends_on:
       postgres-db:
         condition: service_healthy
-
-  postgres-db:
+  postgres-db: &postgres-base
     image: postgres:${POSTGRES_VERSION}
     environment:
     - POSTGRES_USER=django
@@ -55,6 +54,25 @@ services:
       interval: 1s
       timeout: 3s
       retries: 30
+
+  postgres-gis:
+    <<: *base
+    environment:
+    - DJANGO_SETTINGS_MODULE=settings.test_postgres_gis
+    - EXTRA_REQUIREMENTS=postgres.txt
+    depends_on:
+      postgres-db-gis:
+        condition: service_healthy
+  postgres-db-gis:
+    <<: *postgres-base
+    image: "postgres-postgis"
+    build:
+      dockerfile: Dockerfile-postgis
+      context: .
+      args:
+        - POSTGRES_VERSION=${POSTGRES_VERSION}
+    volumes:
+    - postgres-gis:/var/lib/postgresql
 
   mysql:
     <<: *base
@@ -154,3 +172,4 @@ volumes:
   mysql:
   mariadb:
   postgres:
+  postgres-gis:
