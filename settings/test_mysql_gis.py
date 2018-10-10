@@ -4,7 +4,7 @@ DATABASES = {
         'USER': 'root',
         'PASSWORD': '',
         'NAME': 'django',
-        'HOST': 'mysql-db',
+        'HOST': 'mysql-gis-db',
         'TEST': {
             'CHARSET': 'utf8',
         },
@@ -14,7 +14,7 @@ DATABASES = {
         'USER': 'root',
         'PASSWORD': '',
         'NAME': 'django2',
-        'HOST': 'mysql-db',
+        'HOST': 'mysql-gis-db',
         'TEST': {
             'CHARSET': 'utf8',
         },
