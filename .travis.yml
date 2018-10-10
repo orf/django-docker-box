@@ -99,7 +99,6 @@ script:
 # Pull the cached image to speed up tests
 - git clone https://github.com/django/django.git --depth=1
 - docker-compose pull $COMPOSE_APP
-- docker-compose build $COMPOSE_APP
 - |
   if [[ $COMPOSE_APP == *-gis ]]; then
     docker-compose run $COMPOSE_APP gis_tests -v2
