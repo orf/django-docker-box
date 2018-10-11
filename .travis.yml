@@ -107,4 +107,4 @@ script:
   fi
 
 after_failure:
-  - docker-compose logs $COMPOSE_APP-db
+  - docker-compose logs $COMPOSE_APP-db || true
