@@ -6,7 +6,7 @@ RUN apt-get update \
                           build-essential \
                           sudo \
                           # GeoDjango requirements: \
-                          libsqlite3-mod-spatialite binutils libproj-dev gdal-bin libgdal20 libgeoip1 python3-gdal \
+                          libsqlite3-mod-spatialite binutils libproj-dev gdal-bin libgdal20 libgeoip1 \
                           # MySQL: \
                           mysql-client \
                           # Oracle: \
