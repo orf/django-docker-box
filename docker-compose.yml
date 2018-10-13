@@ -34,6 +34,7 @@ services:
     <<: *base
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_sqlite_gis
+    - GDAL_PAM_ENABLED=YES
 
   postgres:
     <<: *base
@@ -62,6 +63,7 @@ services:
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_postgres_gis
     - EXTRA_REQUIREMENTS=postgres.txt
+    - GDAL_PAM_ENABLED=YES
     depends_on:
       postgres-gis-db:
         condition: service_healthy
@@ -99,6 +101,7 @@ services:
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_mysql_gis
     - EXTRA_REQUIREMENTS=mysql.txt
+    - GDAL_PAM_ENABLED=YES
     depends_on:
     - mysql-gis-db
   mysql-gis-db:
