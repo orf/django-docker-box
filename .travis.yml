@@ -108,7 +108,6 @@ script:
 # Ensure the cache directory works with docker. It is extracted with
 # the 'travis' user owning it
 - sudo chown -R root:root $HOME/.cache/pip/
-# Pull the cached image to speed up tests
 - git clone https://github.com/django/django.git --depth=1
 - |
   if [[ $COMPOSE_APP == *-gis ]]; then
@@ -118,4 +117,5 @@ script:
   fi
 
 after_failure:
+  - ls django/tests/gis_tests/data/rasters/
   - docker-compose logs $COMPOSE_APP-db || true
