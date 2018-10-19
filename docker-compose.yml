@@ -95,6 +95,10 @@ services:
     - MYSQL_PASSWORD=django
     - MYSQL_DATABASE=django
     - MYSQL_ALLOW_EMPTY_PASSWORD=1
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
 
   mysql-gis:
     <<: *base
@@ -125,6 +129,10 @@ services:
     - MYSQL_PASSWORD=django
     - MYSQL_DATABASE=django
     - MYSQL_ALLOW_EMPTY_PASSWORD=1
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
 
   oracle:
     <<: *base
