@@ -2,9 +2,6 @@
 version: "2.3"
 
 x-base: &base
-  # Just to speed up test runs by not re-installing the same thing
-  # all the time
-  image: tomforbes/django-docker-box:${PYTHON_VERSION}
   build:
     context: .
     args:
