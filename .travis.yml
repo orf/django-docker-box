@@ -117,5 +117,4 @@ script:
   fi
 
 after_failure:
-  - ls django/tests/gis_tests/data/rasters/
   - docker-compose logs $COMPOSE_APP-db || true
