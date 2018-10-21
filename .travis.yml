@@ -109,6 +109,8 @@ script:
 # the 'travis' user owning it
 - sudo chown -R root:root $HOME/.cache/pip/
 - git clone https://github.com/django/django.git --depth=1
+- docker-compose pull $COMPOSE_APP --include-deps
+- docker-compose build $COMPOSE_APP
 - |
   if [[ $COMPOSE_APP == *-gis ]]; then
     docker-compose run $COMPOSE_APP gis_tests -v2
