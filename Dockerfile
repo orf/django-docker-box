@@ -20,10 +20,14 @@ RUN echo "test ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/test && \
     chmod 0440 /etc/sudoers.d/test
 RUN pip install --upgrade pip
 
-RUN mkdir /tests && chown -R test:test /tests
-COPY --chown=test:test entrypoint.sh /entrypoint.sh
+COPY --chown=test:test tests/requirements/ /requirements/
+RUN pip install -r /requirements/py3.txt
+ARG EXTRA_REQUIREMENTS
+RUN test -z ${EXTRA_REQUIREMENTS} || pip install -r /requirements/${EXTRA_REQUIREMENTS}
 
+RUN mkdir /tests && chown -R test:test /tests
 USER test:test
 ENV PYTHONPATH "${PYTHONPATH}:/tests/django"
-ENTRYPOINT /entrypoint.sh
 WORKDIR /tests
+
+ENTRYPOINT /entrypoint.sh

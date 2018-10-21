@@ -3,18 +3,18 @@ version: "2.3"
 
 x-base: &base
   build:
-    context: .
+    context: ${DJANGO_PATH}
+    dockerfile: ${PWD}/Dockerfile
     args:
     - PYTHON_VERSION=${PYTHON_VERSION}
   volumes:
   - ${DJANGO_PATH}:/tests/django/
   - ./settings:/tests/django/tests/settings
   - ./extra-requirements:/tests/django/tests/requirements/extra/
-  - ./entrypoint.sh:/entrypoint.sh
-  - ${PIP_CACHE_VOLUME}:/root/.cache/pip/
+  - ./oracle_entrypoint.sh:/oracle_entrypoint.sh
   # Using yaml merging here overwrites the arrays. Simpler to just mount this in every service.
   - ./oracle:/oracle
-  entrypoint: /entrypoint.sh python tests/runtests.py
+  entrypoint: python django/tests/runtests.py
 
 x-postgres-base: &postgres-base
   <<: *base
@@ -50,9 +50,14 @@ services:
 
   postgres:
     <<: *base
+    build:
+      context: ${DJANGO_PATH}
+      dockerfile: ${PWD}/Dockerfile
+      args:
+      - PYTHON_VERSION=${PYTHON_VERSION}
+      - EXTRA_REQUIREMENTS=postgres.txt
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_postgres
-    - EXTRA_REQUIREMENTS=postgres.txt
     depends_on:
       postgres-db:
         condition: service_healthy
@@ -62,6 +67,12 @@ services:
 
   postgres-gis:
     <<: *base
+    build:
+      context: ${DJANGO_PATH}
+      dockerfile: ${PWD}/Dockerfile
+      args:
+      - PYTHON_VERSION=${PYTHON_VERSION}
+      - EXTRA_REQUIREMENTS=postgres.txt
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_postgres_gis
     - EXTRA_REQUIREMENTS=postgres.txt
@@ -79,9 +90,14 @@ services:
 
   mysql:
     <<: *base
+    build:
+      context: ${DJANGO_PATH}
+      dockerfile: ${PWD}/Dockerfile
+      args:
+      - PYTHON_VERSION=${PYTHON_VERSION}
+      - EXTRA_REQUIREMENTS=mysql.txt
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_mysql
-    - EXTRA_REQUIREMENTS=mysql.txt
     depends_on:
       mysql-db:
         condition: service_healthy
@@ -102,9 +118,14 @@ services:
 
   mysql-gis:
     <<: *base
+    build:
+      context: ${DJANGO_PATH}
+      dockerfile: ${PWD}/Dockerfile
+      args:
+      - PYTHON_VERSION=${PYTHON_VERSION}
+      - EXTRA_REQUIREMENTS=mysql.txt
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_mysql_gis
-    - EXTRA_REQUIREMENTS=mysql.txt
     depends_on:
       mysql-gis-db:
         condition: service_healthy
@@ -115,9 +136,14 @@ services:
 
   mariadb:
     <<: *base
+    build:
+      context: ${DJANGO_PATH}
+      dockerfile: ${PWD}/Dockerfile
+      args:
+      - PYTHON_VERSION=${PYTHON_VERSION}
+      - EXTRA_REQUIREMENTS=mysql.txt
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_mariadb
-    - EXTRA_REQUIREMENTS=mysql.txt
     depends_on:
       mariadb-db:
         condition: service_healthy
@@ -137,10 +163,15 @@ services:
 
   oracle:
     <<: *base
+    build:
+      context: ${DJANGO_PATH}
+      dockerfile: ${PWD}/Dockerfile
+      args:
+      - PYTHON_VERSION=${PYTHON_VERSION}
+      - EXTRA_REQUIREMENTS=oracle.txt
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_oracle
-    - EXTRA_REQUIREMENTS=oracle.txt
-    - IS_ORACLE=1
+    entrypoint: /oracle_entrypoint.sh python tests/runtests.py
     depends_on:
       oracle-db:
         condition: service_healthy
@@ -171,17 +202,16 @@ services:
 
   docs:
     <<: *base
+    image: tomforbes/django-docker-box:docs
     environment:
       - EXTRA_REQUIREMENTS=extra/docs.txt
-    entrypoint: /entrypoint.sh
-    command: bash -c "cd docs && make spelling"
+    command: bash -c "pip install -r extra/docs.txt && cd docs && make spelling"
     user: root
 
   flake8:
     <<: *base
-    environment:
-    - EXTRA_REQUIREMENTS=extra/linting.txt
-    entrypoint: /entrypoint.sh flake8
+    image: tomforbes/django-docker-box:flake8
+    command: bash -c "pip install -r extra/linting.txt && flake8"
 
 volumes:
   oracle:

@@ -104,10 +104,6 @@ install:
 - sudo pip install docker-compose --upgrade
 
 script:
-- export PIP_CACHE_VOLUME=$HOME/.cache/pip/
-# Ensure the cache directory works with docker. It is extracted with
-# the 'travis' user owning it
-- sudo chown -R root:root $HOME/.cache/pip/
 - git clone https://github.com/django/django.git --depth=1
 - docker-compose pull --include-deps $COMPOSE_APP
 - docker-compose build $COMPOSE_APP
