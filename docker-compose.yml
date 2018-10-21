@@ -48,8 +48,8 @@ services:
     - POSTGRES_DB=django
     # Set a few options to speed up postgresql tests.
     command: -c fsync=off -c synchronous_commit=off -c full_page_writes=off
-    volumes:
-      - postgres:/var/lib/postgresql
+    tmpfs:
+      - /var/lib/postgresql
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "django"]
       interval: 1s
@@ -72,8 +72,8 @@ services:
       args:
         - POSTGRES_VERSION=${POSTGRES_VERSION}
         - POSTGIS_VERSION=${POSTGIS_VERSION}
-    volumes:
-    - postgres-gis:/var/lib/postgresql
+    tmpfs:
+    - /var/lib/postgresql
 
   mysql:
     <<: *base
@@ -86,8 +86,8 @@ services:
   mysql-db: &mysql_base
     image: mysql:${MYSQL_VERSION}
     entrypoint: ['/entrypoint.sh', '--default-authentication-plugin=mysql_native_password']
-    volumes:
-      - mysql:/var/lib/mysql
+    tmpfs:
+      - /var/lib/mysql
     environment:
     - MYSQL_USER=django
     - MYSQL_PASSWORD=django
@@ -109,7 +109,7 @@ services:
   mysql-gis-db:
     <<: *mysql_base
     volumes:
-    - mysql-gis:/var/lib/mysql
+    - /var/lib/mysql
 
   mariadb:
     <<: *base
@@ -121,8 +121,8 @@ services:
         condition: service_healthy
   mariadb-db:
     image: mariadb:${MARIADB_VERSION}
-    volumes:
-    - mariadb:/var/lib/mysql
+    tmpfs:
+    - /var/lib/mysql
     environment:
     - MYSQL_USER=django
     - MYSQL_PASSWORD=django
@@ -182,10 +182,5 @@ services:
     entrypoint: /entrypoint.sh flake8
 
 volumes:
-  pip-cache:
   oracle:
-  mysql:
-  mysql-gis:
-  mariadb:
-  postgres:
-  postgres-gis:
+  pip-cache:
