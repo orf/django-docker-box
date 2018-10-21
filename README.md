@@ -68,6 +68,10 @@ To run the docs spellchecker:
 
 `docker-compose run --rm docs`
 
+To enter a bash shell within the container, run:
+
+`docker-compose run --rm --entrypoint bash [database]`
+
 ## Configuration
 
 | Environment Variable | Default | Description |
