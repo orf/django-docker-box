@@ -154,7 +154,7 @@ services:
 
   # There are issues running the tests with 1 memcached server in parallel.
   # For now use two.
-  memcached:
+  memcached: &memcached
     image: memcached:1.5-alpine
     healthcheck:
       test: /usr/bin/nc -z 127.0.0.1 11211 || exit 1
@@ -163,12 +163,7 @@ services:
       retries: 10
 
   memcached2:
-    image: memcached:1.5-alpine
-    healthcheck:
-      test: /usr/bin/nc -z 127.0.0.1 11211 || exit 1
-      timeout: 1s
-      interval: 30s
-      retries: 10
+    <<: *memcached
 
   docs:
     <<: *base
