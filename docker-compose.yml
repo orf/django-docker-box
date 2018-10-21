@@ -35,6 +35,7 @@ x-postgres-base: &postgres-base
 services:
   sqlite:
     <<: *base
+    image: tomforbes/django-docker-box:sqlite-${PYTHON_VERSION}
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_sqlite
     depends_on:
@@ -45,17 +46,13 @@ services:
 
   sqlite-gis:
     <<: *base
+    image: tomforbes/django-docker-box:sqlite-gis-${PYTHON_VERSION}
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_sqlite_gis
 
   postgres:
     <<: *base
-    build:
-      context: ${DJANGO_PATH}
-      dockerfile: ${PWD}/Dockerfile
-      args:
-      - PYTHON_VERSION=${PYTHON_VERSION}
-      - EXTRA_REQUIREMENTS=postgres.txt
+    image: tomforbes/django-docker-box:postgres-${PYTHON_VERSION}
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_postgres
     depends_on:
@@ -67,12 +64,7 @@ services:
 
   postgres-gis:
     <<: *base
-    build:
-      context: ${DJANGO_PATH}
-      dockerfile: ${PWD}/Dockerfile
-      args:
-      - PYTHON_VERSION=${PYTHON_VERSION}
-      - EXTRA_REQUIREMENTS=postgres.txt
+    image: tomforbes/django-docker-box:postgres-gis-${PYTHON_VERSION}
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_postgres_gis
     - EXTRA_REQUIREMENTS=postgres.txt
@@ -81,6 +73,7 @@ services:
         condition: service_healthy
   postgres-gis-db:
     <<: *postgres-base
+    image: tomforbes/django-docker-box:postgres-gis-${POSTGRES_VERSION}-${POSTGIS_VERSION}
     build:
       dockerfile: Dockerfile-postgis
       context: .
@@ -90,12 +83,7 @@ services:
 
   mysql:
     <<: *base
-    build:
-      context: ${DJANGO_PATH}
-      dockerfile: ${PWD}/Dockerfile
-      args:
-      - PYTHON_VERSION=${PYTHON_VERSION}
-      - EXTRA_REQUIREMENTS=mysql.txt
+    image: tomforbes/django-docker-box:mysql-${PYTHON_VERSION}
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_mysql
     depends_on:
@@ -118,12 +106,7 @@ services:
 
   mysql-gis:
     <<: *base
-    build:
-      context: ${DJANGO_PATH}
-      dockerfile: ${PWD}/Dockerfile
-      args:
-      - PYTHON_VERSION=${PYTHON_VERSION}
-      - EXTRA_REQUIREMENTS=mysql.txt
+    image: tomforbes/django-docker-box:mysql-gis-${PYTHON_VERSION}
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_mysql_gis
     depends_on:
@@ -136,12 +119,7 @@ services:
 
   mariadb:
     <<: *base
-    build:
-      context: ${DJANGO_PATH}
-      dockerfile: ${PWD}/Dockerfile
-      args:
-      - PYTHON_VERSION=${PYTHON_VERSION}
-      - EXTRA_REQUIREMENTS=mysql.txt
+    image: tomforbes/django-docker-box:mariadb-${PYTHON_VERSION}
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_mariadb
     depends_on:
@@ -163,12 +141,7 @@ services:
 
   oracle:
     <<: *base
-    build:
-      context: ${DJANGO_PATH}
-      dockerfile: ${PWD}/Dockerfile
-      args:
-      - PYTHON_VERSION=${PYTHON_VERSION}
-      - EXTRA_REQUIREMENTS=oracle.txt
+    image: tomforbes/django-docker-box:oracle-${PYTHON_VERSION}
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_oracle
     entrypoint: /oracle_entrypoint.sh python tests/runtests.py
@@ -187,8 +160,6 @@ services:
       interval: 30s
       retries: 30
 
-  # There are issues running the tests with 1 memcached server in parallel.
-  # For now use two.
   memcached: &memcached
     image: memcached:1.5-alpine
     healthcheck:
@@ -211,7 +182,9 @@ services:
   flake8:
     <<: *base
     image: tomforbes/django-docker-box:flake8
-    command: bash -c "pip install -r extra/linting.txt && flake8"
+    environment:
+    - EXTRA_REQUIREMENTS=extra/linting.txt
+    entrypoint: /entrypoint.sh flake8
 
 volumes:
   oracle:

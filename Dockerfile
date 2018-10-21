@@ -18,6 +18,7 @@ RUN apt-get update \
 RUN groupadd -r test && useradd --no-log-init -r -g test test
 RUN echo "test ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/test && \
     chmod 0440 /etc/sudoers.d/test
+ENV PIP_NO_CACHE_DIR=off
 RUN pip install --upgrade pip
 
 COPY --chown=test:test tests/requirements/ /requirements/

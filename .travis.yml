@@ -116,3 +116,9 @@ script:
 
 after_failure:
   - docker-compose logs $COMPOSE_APP-db || true
+
+deploy:
+  provider: script
+  script: bash docker_push $COMPOSE_APP
+  on:
+    branch: master
