@@ -7,6 +7,8 @@ x-base: &base
     dockerfile: ${PWD}/Dockerfile
     args:
     - PYTHON_VERSION=${PYTHON_VERSION}
+    cache_from:
+    - tomforbes/django-docker-box:${PYTHON_VERSION}
   volumes:
   - ${DJANGO_PATH}:/tests/django/
   - ./settings:/tests/django/tests/settings
