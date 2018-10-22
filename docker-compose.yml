@@ -16,7 +16,6 @@ x-base: &base
   entrypoint: python tests/runtests.py
 
 x-postgres-base: &postgres-base
-  <<: *base
   environment:
   - POSTGRES_USER=django
   - POSTGRES_PASSWORD=django
