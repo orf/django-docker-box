@@ -6,6 +6,12 @@ language: python
 cache: pip
 install: skip
 
+# Update docker and docker-compose
+addons:
+  apt:
+    packages:
+      - docker-ce
+      - docker-compose
 
 env:
 # Linting and docs
