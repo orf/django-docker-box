@@ -2,7 +2,7 @@ sudo: required
 dist: trusty
 services:
 - docker
-language: python
+python: 3
 cache: pip
 
 env:
