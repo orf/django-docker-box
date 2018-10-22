@@ -3,6 +3,7 @@ dist: trusty
 services:
 - docker
 python: 3
+language: python
 cache: pip
 
 env:
