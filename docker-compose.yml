@@ -152,4 +152,3 @@ services:
 
 volumes:
   oracle:
-  pip-cache:

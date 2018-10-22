@@ -5,13 +5,9 @@ RUN apt-get update \
     && apt-get install -y libmemcached-dev \
                           build-essential \
                           sudo \
-                          # GeoDjango requirements: \
                           libsqlite3-mod-spatialite binutils libproj-dev gdal-bin libgdal20 libgeoip1 \
-                          # MySQL: \
                           mysql-client \
-                          # Oracle: \
                           unzip libaio1 \
-                          # Docs:
                           libenchant1c2a \
     && apt-get clean
 
