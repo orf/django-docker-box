@@ -16,6 +16,22 @@ x-base: &base
   - ./oracle:/oracle
   entrypoint: /entrypoint.sh python tests/runtests.py
 
+x-postgres-base: &postgres-base
+  <<: *base
+  environment:
+  - POSTGRES_USER=django
+  - POSTGRES_PASSWORD=django
+  - POSTGRES_DB=django
+  # Set a few options to speed up postgresql tests.
+  command: -c fsync=off -c synchronous_commit=off -c full_page_writes=off
+  tmpfs:
+    - /var/lib/postgresql
+  healthcheck:
+    test: ["CMD", "pg_isready", "-U", "django"]
+    interval: 1s
+    timeout: 3s
+    retries: 30
+
 services:
   sqlite:
     <<: *base
@@ -40,21 +56,9 @@ services:
     depends_on:
       postgres-db:
         condition: service_healthy
-  postgres-db: &postgres-base
+  postgres-db:
+    <<: *postgres-base
     image: postgres:${POSTGRES_VERSION}
-    environment:
-    - POSTGRES_USER=django
-    - POSTGRES_PASSWORD=django
-    - POSTGRES_DB=django
-    # Set a few options to speed up postgresql tests.
-    command: -c fsync=off -c synchronous_commit=off -c full_page_writes=off
-    tmpfs:
-      - /var/lib/postgresql
-    healthcheck:
-      test: ["CMD", "pg_isready", "-U", "django"]
-      interval: 1s
-      timeout: 3s
-      retries: 30
 
   postgres-gis:
     <<: *base
@@ -66,15 +70,12 @@ services:
         condition: service_healthy
   postgres-gis-db:
     <<: *postgres-base
-    image: postgres-gis:${POSTGRES_VERSION}
     build:
       dockerfile: Dockerfile-postgis
       context: .
       args:
         - POSTGRES_VERSION=${POSTGRES_VERSION}
         - POSTGIS_VERSION=${POSTGIS_VERSION}
-    tmpfs:
-    - /var/lib/postgresql
 
   mysql:
     <<: *base
