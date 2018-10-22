@@ -142,12 +142,14 @@ services:
 
   docs:
     <<: *base
+    entrypoint: ""
     command: make spelling
     working_dir: /tests/django/docs
     user: root
 
   flake8:
     <<: *base
+    entrypoint: ""
     command: flake8
 
 volumes:
