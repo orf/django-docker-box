@@ -102,7 +102,7 @@ env:
 - COMPOSE_APP=mariadb PYTHON_VERSION=3.7 MARIADB_VERSION=10.3
 
 install:
-- sudo pip install docker-compose --upgrade
+- pip install docker-compose --upgrade
 
 script:
 - git clone https://github.com/django/django.git --depth=1 /tmp/django
