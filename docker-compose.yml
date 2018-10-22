@@ -2,6 +2,7 @@
 version: "2.3"
 
 x-base: &base
+  image: tomforbes/django-docker-box:${PYTHON_VERSION}
   build:
     context: ${DJANGO_PATH}
     dockerfile: ${PWD}/Dockerfile
@@ -35,7 +36,6 @@ x-postgres-base: &postgres-base
 services:
   sqlite:
     <<: *base
-    image: tomforbes/django-docker-box:sqlite-${PYTHON_VERSION}
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_sqlite
     depends_on:
@@ -46,13 +46,11 @@ services:
 
   sqlite-gis:
     <<: *base
-    image: tomforbes/django-docker-box:sqlite-gis-${PYTHON_VERSION}
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_sqlite_gis
 
   postgres:
     <<: *base
-    image: tomforbes/django-docker-box:postgres-${PYTHON_VERSION}
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_postgres
     depends_on:
@@ -64,10 +62,8 @@ services:
 
   postgres-gis:
     <<: *base
-    image: tomforbes/django-docker-box:postgres-gis-${PYTHON_VERSION}
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_postgres_gis
-    - EXTRA_REQUIREMENTS=postgres.txt
     depends_on:
       postgres-gis-db:
         condition: service_healthy
@@ -83,7 +79,6 @@ services:
 
   mysql:
     <<: *base
-    image: tomforbes/django-docker-box:mysql-${PYTHON_VERSION}
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_mysql
     depends_on:
@@ -106,7 +101,6 @@ services:
 
   mysql-gis:
     <<: *base
-    image: tomforbes/django-docker-box:mysql-gis-${PYTHON_VERSION}
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_mysql_gis
     depends_on:
@@ -119,7 +113,6 @@ services:
 
   mariadb:
     <<: *base
-    image: tomforbes/django-docker-box:mariadb-${PYTHON_VERSION}
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_mariadb
     depends_on:
@@ -173,7 +166,6 @@ services:
 
   docs:
     <<: *base
-    image: tomforbes/django-docker-box:docs
     environment:
       - EXTRA_REQUIREMENTS=extra/docs.txt
     command: bash -c "pip install -r extra/docs.txt && cd docs && make spelling"
@@ -181,7 +173,6 @@ services:
 
   flake8:
     <<: *base
-    image: tomforbes/django-docker-box:flake8
     environment:
     - EXTRA_REQUIREMENTS=extra/linting.txt
     entrypoint: /entrypoint.sh flake8
