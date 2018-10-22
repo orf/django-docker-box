@@ -27,7 +27,6 @@ RUN test -z ${EXTRA_REQUIREMENTS} || pip install -r /requirements/${EXTRA_REQUIR
 
 RUN mkdir /tests && chown -R test:test /tests
 USER test:test
-ENV PYTHONPATH "${PYTHONPATH}:/tests/django"
-WORKDIR /tests
-
-ENTRYPOINT /entrypoint.sh
+ENV PYTHONPATH "${PYTHONPATH}:/tests/django/"
+VOLUME /tests/django
+WORKDIR /tests/django

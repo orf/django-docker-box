@@ -14,7 +14,7 @@ x-base: &base
   - ./oracle_entrypoint.sh:/oracle_entrypoint.sh
   # Using yaml merging here overwrites the arrays. Simpler to just mount this in every service.
   - ./oracle:/oracle
-  entrypoint: python django/tests/runtests.py
+  entrypoint: python tests/runtests.py
 
 x-postgres-base: &postgres-base
   <<: *base
