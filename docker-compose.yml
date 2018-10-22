@@ -13,7 +13,7 @@ x-base: &base
   - ./oracle_entrypoint.sh:/oracle_entrypoint.sh
   # Using yaml merging here overwrites the arrays. Simpler to just mount this in every service.
   - ./oracle:/oracle
-  entrypoint: python tests/runtests.py
+  entrypoint: bash -c "wait-for-it.sh -s -t 20 $${WAIT_FOR} -- python tests/runtests.py $$@" --
 
 x-postgres-base: &postgres-base
   environment:
@@ -23,27 +23,21 @@ x-postgres-base: &postgres-base
   # Set a few options to speed up postgresql tests.
   command: -c fsync=off -c synchronous_commit=off -c full_page_writes=off
   tmpfs:
-    - /var/lib/postgresql
-  healthcheck:
-    test: ["CMD", "pg_isready", "-U", "django"]
-    interval: 1s
-    timeout: 3s
-    retries: 30
-    start_period: 4s
+  - /var/lib/postgresql
 
 services:
   sqlite:
     <<: *base
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_sqlite
+    entrypoint: python tests/runtests.py
     depends_on:
-      memcached:
-        condition: service_healthy
-      memcached2:
-        condition: service_healthy
+    - memcached
+    - memcached2
 
   sqlite-gis:
     <<: *base
+    entrypoint: python tests/runtests.py
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_sqlite_gis
 
@@ -51,9 +45,9 @@ services:
     <<: *base
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_postgres
+    - WAIT_FOR=postgres-db:5432
     depends_on:
-      postgres-db:
-        condition: service_healthy
+    - postgres-db
   postgres-db:
     <<: *postgres-base
     image: postgres:${POSTGRES_VERSION}
@@ -62,9 +56,9 @@ services:
     <<: *base
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_postgres_gis
+    - WAIT_FOR=postgres-gis-db:5432
     depends_on:
-      postgres-gis-db:
-        condition: service_healthy
+    - postgres-gis-db
   postgres-gis-db:
     <<: *postgres-base
     image: tomforbes/django-docker-box:postgres-gis-${POSTGRES_VERSION}-${POSTGIS_VERSION}
@@ -72,39 +66,34 @@ services:
       dockerfile: Dockerfile-postgis
       context: .
       args:
-        - POSTGRES_VERSION=${POSTGRES_VERSION}
-        - POSTGIS_VERSION=${POSTGIS_VERSION}
+      - POSTGRES_VERSION=${POSTGRES_VERSION}
+      - POSTGIS_VERSION=${POSTGIS_VERSION}
 
   mysql:
     <<: *base
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_mysql
+    - WAIT_FOR=mysql-db:3306
     depends_on:
-      mysql-db:
-        condition: service_healthy
+    - mysql-db
   mysql-db: &mysql_base
     image: mysql:${MYSQL_VERSION}
     entrypoint: ['/entrypoint.sh', '--default-authentication-plugin=mysql_native_password']
     tmpfs:
-      - /var/lib/mysql
+    - /var/lib/mysql
     environment:
     - MYSQL_USER=django
     - MYSQL_PASSWORD=django
     - MYSQL_DATABASE=django
     - MYSQL_ALLOW_EMPTY_PASSWORD=1
-    healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
-      timeout: 20s
-      retries: 10
-      start_period: 4s
 
   mysql-gis:
     <<: *base
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_mysql_gis
+    - WAIT_FOR=mysql-gis-db:3306
     depends_on:
-      mysql-gis-db:
-        condition: service_healthy
+    - mysql-gis-db
   mysql-gis-db:
     <<: *mysql_base
     volumes:
@@ -114,9 +103,9 @@ services:
     <<: *base
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_mariadb
+    - WAIT_FOR=mariadb-db:3306
     depends_on:
-      mariadb-db:
-        condition: service_healthy
+    - mariadb-db
   mariadb-db:
     image: mariadb:${MARIADB_VERSION}
     tmpfs:
@@ -126,39 +115,25 @@ services:
     - MYSQL_PASSWORD=django
     - MYSQL_DATABASE=django
     - MYSQL_ALLOW_EMPTY_PASSWORD=1
-    healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
-      timeout: 20s
-      retries: 10
 
   oracle:
     <<: *base
     image: tomforbes/django-docker-box:oracle-${PYTHON_VERSION}
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_oracle
+    - WAIT_FOR=oracle-db:1521
     entrypoint: /oracle_entrypoint.sh python tests/runtests.py
     depends_on:
-      oracle-db:
-        condition: service_healthy
+    - oracle-db
   oracle-db:
     image: sath89/oracle-12c
     volumes:
-      - oracle:/u01/app/oracle/
+    - oracle:/u01/app/oracle/
     environment:
-      - WEB_CONSOLE=false
-    healthcheck:
-      test: echo "select * from v\xe;" | sqlplus -S sys/oracle as sysdba || exit 1
-      timeout: 3s
-      interval: 30s
-      retries: 30
+    - WEB_CONSOLE=false
 
   memcached: &memcached
     image: memcached:1.5-alpine
-    healthcheck:
-      test: /usr/bin/nc -z 127.0.0.1 11211 || exit 1
-      timeout: 1s
-      interval: 30s
-      retries: 10
 
   memcached2:
     <<: *memcached
