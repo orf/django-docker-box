@@ -2,7 +2,7 @@ sudo: required
 dist: trusty
 services:
 - docker
-python: 3
+python: 3.6
 language: python
 cache: pip
 
