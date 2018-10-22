@@ -166,7 +166,7 @@ services:
   docs:
     <<: *base
     command: make spelling
-    working_dir: ./docs
+    working_dir: /tests/django/docs
     user: root
 
   flake8:
