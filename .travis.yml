@@ -105,8 +105,8 @@ install:
 
 script:
 - git clone https://github.com/django/django.git --depth=1
+- export DJANGO_PATH=./django
 - docker-compose pull --include-deps $COMPOSE_APP || true
-- docker-compose build $COMPOSE_APP
 - |
   if [[ $COMPOSE_APP == *-gis ]]; then
     docker-compose run $COMPOSE_APP gis_tests -v2
