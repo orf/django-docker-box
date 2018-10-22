@@ -104,8 +104,8 @@ install:
 - sudo pip install docker-compose --upgrade
 
 script:
-- git clone https://github.com/django/django.git --depth=1
-- export DJANGO_PATH=./django
+- git clone https://github.com/django/django.git --depth=1 /tmp/django
+- export DJANGO_PATH=/tmp/django
 - docker-compose pull --include-deps $COMPOSE_APP || true
 - |
   if [[ $COMPOSE_APP == *-gis ]]; then
@@ -119,6 +119,6 @@ after_failure:
 
 deploy:
   provider: script
-  script: bash docker_push $COMPOSE_APP
+  script: bash docker_push.sh $COMPOSE_APP
   on:
     branch: master
