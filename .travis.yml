@@ -4,14 +4,6 @@ services:
 - docker
 language: python
 cache: pip
-install: skip
-
-# Update docker and docker-compose
-addons:
-  apt:
-    packages:
-      - docker-ce
-      - docker-compose
 
 env:
 # Linting and docs
@@ -108,6 +100,8 @@ env:
 - COMPOSE_APP=mariadb PYTHON_VERSION=3.7 MARIADB_VERSION=10.2
 - COMPOSE_APP=mariadb PYTHON_VERSION=3.7 MARIADB_VERSION=10.3
 
+install:
+- sudo pip install docker-compose --upgrade
 
 script:
 - export PIP_CACHE_VOLUME=$HOME/.cache/pip/
