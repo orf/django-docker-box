@@ -1,4 +1,3 @@
-# ToDo: Refactor this 'extends: sqlite' nonsense out into yaml merging using &.
 version: "2.3"
 
 x-base: &base
@@ -11,7 +10,6 @@ x-base: &base
   volumes:
   - ${DJANGO_PATH}:/tests/django/
   - ./settings:/tests/django/tests/settings
-  - ./extra-requirements:/tests/django/tests/requirements/extra/
   - ./oracle_entrypoint.sh:/oracle_entrypoint.sh
   # Using yaml merging here overwrites the arrays. Simpler to just mount this in every service.
   - ./oracle:/oracle
@@ -166,16 +164,13 @@ services:
 
   docs:
     <<: *base
-    environment:
-      - EXTRA_REQUIREMENTS=extra/docs.txt
-    command: bash -c "pip install -r extra/docs.txt && cd docs && make spelling"
+    command: make spelling
+    working_dir: ./docs
     user: root
 
   flake8:
     <<: *base
-    environment:
-    - EXTRA_REQUIREMENTS=extra/linting.txt
-    entrypoint: /entrypoint.sh flake8
+    command: flake8
 
 volumes:
   oracle:

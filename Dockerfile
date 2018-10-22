@@ -22,9 +22,8 @@ ENV PIP_NO_CACHE_DIR=off
 RUN pip install --upgrade pip
 
 COPY --chown=test:test tests/requirements/ /requirements/
-RUN pip install -r /requirements/py3.txt
-ARG EXTRA_REQUIREMENTS
-RUN test -z ${EXTRA_REQUIREMENTS} || pip install -r /requirements/${EXTRA_REQUIREMENTS}
+RUN for f in /requirements/*.txt; do pip install -r $f; done && \
+    pip install flake8 flake8-isort sphinx pyenchant sphinxcontrib-spelling
 
 RUN mkdir /tests && chown -R test:test /tests
 USER test:test
