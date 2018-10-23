@@ -33,7 +33,7 @@ Then simply run:
 All arguments are passed to `runtests.py`. Before they are run all specific dependencies are 
 installed (and cached across runs).
 
-### Different databases
+## Different databases
 
 Simply substitute `sqlite` for any supported database:
 
@@ -51,7 +51,7 @@ And if you're a madman you can run all the tests for all databases in parallel:
 
 You can customize the version of the database you test against by changing the appropriate `[db]_VERSION` environment variable. See the Configuration section below for the available options and their defaults.
 
-### Different Python versions
+## Different Python versions
 
 The `PYTHON_VERSION` environment variable customizes which version of Python you are running the tests against. e.g:
 
@@ -61,7 +61,7 @@ You can also pull the pre-built image in the same way:
 
 `PYTHON_VERSION=3.7 docker-compose pull sqlite`
 
-#### Oracle
+## Oracle
 
 As usual Oracle is a bit more complex to set up. You need to download the latest `instantclient` **zip file**
 [from this page](https://www.oracle.com/technetwork/topics/linuxx86-64soft-092277.html) and place it inside the 
@@ -78,11 +78,15 @@ And wait for it to initialize. Once it has, use ctrl+c to terminate it and execu
 
 To run the test suite against it. All other databases support different versions, however Oracle does not.
 
-### Utilities
+## Utilities
 
 To run the docs spellchecker:
 
 `docker-compose run --rm docs`
+
+Or flake8:
+
+`docker-compose run --rm flake8`
 
 To enter a bash shell within the container, run:
 
