@@ -15,7 +15,7 @@ x-base: &base
   - ./oracle_entrypoint.sh:/oracle_entrypoint.sh
   # Using yaml merging here overwrites the arrays. Simpler to just mount this in every service.
   - ./oracle:/oracle
-  entrypoint: bash -c "wait-for-it.sh -s -t 20 $${WAIT_FOR} -- python tests/runtests.py $$@" --
+  entrypoint: bash -c "wait-for-it.sh -s -t 20 $${WAIT_FOR} -- python tests/runtests.py -v2 $$@" --
 
 x-postgres-base: &postgres-base
   environment:
