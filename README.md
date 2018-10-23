@@ -47,6 +47,20 @@ And if you're a madman you can run all the tests for all databases in parallel:
 
 `docker-compose up`
 
+#### Database versions
+
+You can customize the version of the database you test against by changing the appropriate `[db]_VERSION` environment variable. See the Configuration section below for the available options and their defaults.
+
+### Different Python versions
+
+The `PYTHON_VERSION` environment variable customizes which version of Python you are running the tests against. e.g:
+
+`PYTHON_VERSION=3.7 docker-compose run --rm sqlite`
+
+You can also pull the pre-built image in the same way:
+
+`PYTHON_VERSION=3.7 docker-compose pull sqlite`
+
 #### Oracle
 
 As usual Oracle is a bit more complex to set up. You need to download the latest `instantclient` **zip file**
