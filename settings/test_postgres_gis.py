@@ -36,4 +36,4 @@ PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.MD5PasswordHasher',
 ]
 
-GEOIP_PATH = '/geolite2/'
+# GEOIP_PATH = '/geolite2/'
