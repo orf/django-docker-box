@@ -12,24 +12,26 @@ database versions, including Oracle.
 
 Clone this repository somewhere. Also make sure you have docker and docker-compose installed.
 
-Ensure that the `DJANGO_PATH` variable is correct. You can either customize the variable:
+Ensure that the `DJANGO_PATH` variable is correct:
 
 `export DJANGO_PATH=~/projects/django/`
- 
-Or create a symbolic link to `django` inside this source:
- 
-`ln -s [path to django] [django docker box path]/django`
 
-If you see an error like `ERROR: Named volume "django:/django:rw" is used in service "sqlite" but no declaration was found in the volumes section.` 
-then your `DJANGO_PATH` is incorrect. Make sure it starts with a `./` or a `/`
+If you see a docker-compose warning about it not being defined followed by an error ensure that is defined in the shell you are using.
 
-Afterwards, simply run:
+You can now either download the latest image used on the CI servers with the dependencies pre-installed:
+
+`docker-compose pull sqlite`
+
+Or build it yourself:
+
+`docker-compose build sqlite`
+
+Then simply run:
 
 `docker-compose run --rm sqlite`
 
 All arguments are passed to `runtests.py`. Before they are run all specific dependencies are 
 installed (and cached across runs).
-
 
 ### Different databases
 
