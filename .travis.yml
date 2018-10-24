@@ -100,6 +100,10 @@ env:
 - COMPOSE_APP=mariadb PYTHON_VERSION=3.7 MARIADB_VERSION=10.2
 - COMPOSE_APP=mariadb PYTHON_VERSION=3.7 MARIADB_VERSION=10.3
 
+before_install:
+  - echo 'DOCKER_OPTS="${DOCKER_OPTS} --registry-mirror=https://mirror.gcr.io"' | sudo tee -a /etc/default/docker
+  - sudo service docker restart
+
 install:
 - pip install docker-compose --upgrade
 
