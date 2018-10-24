@@ -50,6 +50,8 @@ services:
     - WAIT_FOR=postgres-db:5432
     depends_on:
     - postgres-db
+    - memcached
+    - memcached2
   postgres-db:
     <<: *postgres-base
     image: postgres:${POSTGRES_VERSION}
@@ -78,6 +80,8 @@ services:
     - WAIT_FOR=mysql-db:3306
     depends_on:
     - mysql-db
+    - memcached
+    - memcached2
   mysql-db: &mysql_base
     image: mysql:${MYSQL_VERSION}
     entrypoint: ['/entrypoint.sh', '--default-authentication-plugin=mysql_native_password']
@@ -108,6 +112,8 @@ services:
     - WAIT_FOR=mariadb-db:3306
     depends_on:
     - mariadb-db
+    - memcached
+    - memcached2
   mariadb-db:
     image: mariadb:${MARIADB_VERSION}
     tmpfs:
@@ -127,6 +133,8 @@ services:
     entrypoint: /oracle_entrypoint.sh python tests/runtests.py
     depends_on:
     - oracle-db
+    - memcached
+    - memcached2
   oracle-db:
     image: sath89/oracle-12c
     volumes:
@@ -135,7 +143,7 @@ services:
     - WEB_CONSOLE=false
 
   memcached: &memcached
-    image: memcached:1.5-alpine
+    image: memcached
 
   memcached2:
     <<: *memcached
