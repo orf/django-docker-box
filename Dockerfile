@@ -9,6 +9,7 @@ RUN apt-get update \
                           mysql-client \
                           unzip libaio1 \
                           libenchant1c2a \
+                          gettext \
     && apt-get clean
 
 RUN groupadd -r test && useradd --no-log-init -r -g test test
