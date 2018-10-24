@@ -158,5 +158,20 @@ services:
     <<: *base
     entrypoint: flake8
 
+  # Browser tests
+  chrome:
+    <<: *base
+    command: --selenium=chrome --selenium-hub=http://chrome-browser:4444/wd/hub
+    environment:
+    - WAIT_FOR=chrome-browser:4444
+    depends_on:
+      - chrome-browser
+  chrome-browser:
+    image: selenium/standalone-chrome
+    volumes:
+    - /dev/shm:/dev/shm
+
+
 volumes:
   oracle:
+
