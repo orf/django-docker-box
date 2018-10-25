@@ -39,7 +39,7 @@ services:
 
   sqlite-gis:
     <<: *base
-    entrypoint: python tests/runtests.py -v3
+    entrypoint: python tests/runtests.py
     environment:
     - DJANGO_SETTINGS_MODULE=settings.test_sqlite_gis
 
