@@ -102,6 +102,7 @@ env:
 
 # Browsers:
 - COMPOSE_APP=chrome PYTHON_VERSION=3.5
+- COMPOSE_APP=firefox PYTHON_VERSION=3.5
 
 matrix:
   allow_failures:
