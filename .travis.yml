@@ -102,6 +102,7 @@ env:
 
 # Browsers:
 - COMPOSE_APP=chrome PYTHON_VERSION=3.5
+- COMPOSE_APP=firefox PYTHON_VERSION=3.5
 
 before_install:
   - echo 'DOCKER_OPTS="${DOCKER_OPTS} --registry-mirror=https://mirror.gcr.io"' | sudo tee -a /etc/default/docker
@@ -111,7 +112,7 @@ install:
 - pip install docker-compose --upgrade
 
 script:
-- git clone https://github.com/orf/django.git -b add-selenium-hub --depth=1 /tmp/django
+- git clone https://github.com/django/django.git --depth=1 /tmp/django
 - export DJANGO_PATH=/tmp/django
 - docker-compose pull --include-deps $COMPOSE_APP || true
 - docker-compose build --pull $COMPOSE_APP
