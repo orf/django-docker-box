@@ -100,6 +100,13 @@ env:
 - COMPOSE_APP=mariadb PYTHON_VERSION=3.7 MARIADB_VERSION=10.2
 - COMPOSE_APP=mariadb PYTHON_VERSION=3.7 MARIADB_VERSION=10.3
 
+# Browsers:
+- COMPOSE_APP=chrome PYTHON_VERSION=3.5
+
+matrix:
+  allow_failures:
+    - env: COMPOSE_APP=firefox PYTHON_VERSION=3.5
+
 before_install:
   - echo 'DOCKER_OPTS="${DOCKER_OPTS} --registry-mirror=https://mirror.gcr.io"' | sudo tee -a /etc/default/docker
   - sudo service docker restart
@@ -120,7 +127,7 @@ script:
   fi
 
 after_failure:
-  - docker-compose logs $COMPOSE_APP-db || true
+  - docker-compose logs
 
 deploy:
   provider: script
