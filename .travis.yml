@@ -102,7 +102,10 @@ env:
 
 # Browsers:
 - COMPOSE_APP=chrome PYTHON_VERSION=3.5
-- COMPOSE_APP=firefox PYTHON_VERSION=3.5
+
+matrix:
+  allow_failures:
+    - env: COMPOSE_APP=firefox PYTHON_VERSION=3.5
 
 before_install:
   - echo 'DOCKER_OPTS="${DOCKER_OPTS} --registry-mirror=https://mirror.gcr.io"' | sudo tee -a /etc/default/docker
