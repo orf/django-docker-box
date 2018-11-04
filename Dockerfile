@@ -4,7 +4,6 @@ FROM python:${PYTHON_VERSION}
 RUN apt-get update \
     && apt-get install -y libmemcached-dev \
                           build-essential \
-                          sudo \
                           libsqlite3-mod-spatialite binutils libproj-dev gdal-bin libgdal20 libgeoip1 \
                           mysql-client \
                           unzip libaio1 \
