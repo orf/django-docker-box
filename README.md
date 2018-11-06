@@ -12,7 +12,7 @@ database versions, including Oracle.
 
 Clone this repository somewhere. Also make sure you have docker and docker-compose installed.
 
-Ensure that the `DJANGO_PATH` variable is correct:
+Ensure that the `DJANGO_PATH` variable points to the root of the Django repo:
 
 `export DJANGO_PATH=~/projects/django/`
 
