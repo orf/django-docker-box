@@ -43,3 +43,5 @@ CACHES = {
         'KEY_PREFIX': '2:'
     }
 }
+
+TEST_OUTPUT_DIR = '/tests/django/output/'

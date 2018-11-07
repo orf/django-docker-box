@@ -44,3 +44,6 @@ CACHES = {
         'KEY_PREFIX': '2:'
     }
 }
+
+TEST_RUNNER = 'xmlrunner.extra.djangotestrunner.XMLTestRunner'
+TEST_OUTPUT_DIR = '/tests/django/output/'
