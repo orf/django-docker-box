@@ -39,4 +39,4 @@ PASSWORD_HASHERS = [
 GEOIP_PATH = '/geolite2/'
 
 TEST_RUNNER = 'xmlrunner.extra.djangotestrunner.XMLTestRunner'
-TEST_OUTPUT_DIR = '/tests/django/output/'
+TEST_OUTPUT_DIR = '/tests/results'

@@ -32,6 +32,7 @@ RUN for f in /requirements/*.txt; do pip install -r $f; done && \
     pip install flake8 flake8-isort sphinx pyenchant sphinxcontrib-spelling selenium unittest-xml-reporting
 
 RUN mkdir /tests && chown -R test:test /tests
+RUN mkdir /tests/results && chown -R test:test /tests/results/
 USER test:test
 ENV PYTHONPATH "${PYTHONPATH}:/tests/django/"
 VOLUME /tests/django
