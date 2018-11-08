@@ -29,7 +29,7 @@ RUN pip install --upgrade pip
 
 COPY --chown=test:test tests/requirements/ /requirements/
 RUN for f in /requirements/*.txt; do pip install -r $f; done && \
-    pip install flake8 flake8-isort sphinx pyenchant sphinxcontrib-spelling selenium
+    pip install flake8 flake8-isort sphinx pyenchant sphinxcontrib-spelling selenium unittest-xml-reporting
 
 RUN mkdir /tests && chown -R test:test /tests
 USER test:test
