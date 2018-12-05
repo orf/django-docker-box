@@ -54,7 +54,7 @@ services:
     - memcached2
   postgres-db:
     <<: *postgres-base
-    image: postgres:${POSTGRES_VERSION}
+    image: postgres:${POSTGRES_VERSION}-alpine
 
   postgres-gis:
     <<: *base
@@ -83,7 +83,7 @@ services:
     - memcached
     - memcached2
   mysql-db: &mysql_base
-    image: mysql:${MYSQL_VERSION}
+    image: mysql:${MYSQL_VERSION}-alpine
     entrypoint: ['/entrypoint.sh', '--default-authentication-plugin=mysql_native_password']
     tmpfs:
     - /var/lib/mysql
@@ -115,7 +115,7 @@ services:
     - memcached
     - memcached2
   mariadb-db:
-    image: mariadb:${MARIADB_VERSION}
+    image: mariadb:${MARIADB_VERSION}-alpine
     tmpfs:
     - /var/lib/mysql
     environment:
@@ -143,7 +143,7 @@ services:
     - WEB_CONSOLE=false
 
   memcached: &memcached
-    image: memcached
+    image: memcached-alpine
 
   memcached2:
     <<: *memcached
