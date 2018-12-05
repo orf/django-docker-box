@@ -1,14 +1,15 @@
 ARG PYTHON_VERSION
-FROM python:${PYTHON_VERSION}
+FROM python:${PYTHON_VERSION}-slim
 
 RUN apt-get update \
     && apt-get install -y libmemcached-dev \
                           build-essential \
                           libsqlite3-mod-spatialite binutils libproj-dev gdal-bin libgdal20 libgeoip1 \
-                          mysql-client \
+                          default-libmysqlclient-dev \
                           unzip libaio1 \
                           libenchant1c2a \
                           gettext \
+                          wget \
     && apt-get clean
 
 RUN groupadd -r test && useradd --no-log-init -r -g test test
@@ -25,6 +26,7 @@ RUN wget -q https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-
     && chmod a+x /bin/wait-for-it.sh
 
 ENV PIP_NO_CACHE_DIR=off
+ENV PYTHONDONTWRITEBYTECODE=1
 RUN pip install --upgrade pip
 
 COPY --chown=test:test tests/requirements/ /requirements/
