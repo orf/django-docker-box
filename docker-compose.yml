@@ -143,7 +143,7 @@ services:
     - WEB_CONSOLE=false
 
   memcached: &memcached
-    image: memcached-alpine
+    image: memcached:alpine
 
   memcached2:
     <<: *memcached
