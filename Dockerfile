@@ -5,7 +5,7 @@ RUN apt-get update \
     && apt-get install -y libmemcached-dev \
                           build-essential \
                           libsqlite3-mod-spatialite binutils libproj-dev gdal-bin libgdal20 libgeoip1 \
-                          default-libmysqlclient-dev \
+                          mysql-client \
                           unzip libaio1 \
                           libenchant1c2a \
                           gettext \
