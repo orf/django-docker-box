@@ -1,5 +1,7 @@
 # django-docker-box
 
+## This is now part of the official Django organization. Please use [https://github.com/django/django-docker-box](https://github.com/django/django-docker-box).
+
 [![Build Status](https://travis-ci.com/orf/django-docker-box.svg?branch=master)](https://travis-ci.com/orf/django-docker-box)
 
 Run the django test suite across multiple databases.
